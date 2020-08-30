@@ -1,0 +1,32 @@
+.filter__wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.filter__tweets {
+    position: absolute;
+    background-color: white;
+    box-shadow: 2px 2px 10px 0px rgba(0,0,0,0.75);
+    border-radius: 5px;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+}
+
+.filter__tweets .filter__option {
+    display: inline-flex;
+    cursor: pointer;
+    padding: 15px;
+}
+
+.filter__tweets .filter__option:hover {
+    background-color: #e8f5fe;
+    color: #50b7f5;
+    transition: color 100ms ease-out;
+}
+
+.filter__tweets .filter__option .filter__option--body {
+    margin-left: 15px;
+}

@@ -1,6 +1,8 @@
 import React, { Component, useState } from 'react';
-import { Form, TextArea, Button, Icon } from 'semantic-ui-react'
+import { Form, TextArea, Icon } from 'semantic-ui-react'
 import { gql, useMutation } from '@apollo/client';
+import { Avatar, Button } from "@material-ui/core";
+import ImageIcon from '@material-ui/icons/Image';
 
 const GET_POSTS = gql`
   query GetPosts {
@@ -45,22 +47,36 @@ mutation createPost($content: String!) {
 `;
 
 const NewPost = () => {
-    const [addPost, { dataMutated }] = useMutation(ADD_POST);
-    const [message, setMessage] = useState('');
-    let input;
-    return (
-        <Form onSubmit={e => {
-            e.preventDefault();
-            addPost({ variables: { content: message },
-              refetchQueries: [{query: GET_POSTS}]})
-              setMessage('')
-        }}>
-            <TextArea onChange={(e)=>{setMessage(e.target.value)}} placeholder='Whats happening, bro?' style={{ minHeight: 100, maxHeight: 100 }} />
-            <Button icon type="submit" style={{marginTop:'1rem'}} labelPosition='right'>
-                Tweet
-      <Icon name='right arrow' />
-            </Button>
-        </Form>);
+  const [addPost, { dataMutated }] = useMutation(ADD_POST);
+  const [tweetImg, setTweetImg] = useState('');
+  const [message, setMessage] = useState('');
+  let input;
+  return (
+    <form onSubmit={e => {
+      e.preventDefault();
+      addPost({
+        variables: { content: message },
+        refetchQueries: [{ query: GET_POSTS }]
+      })
+      setMessage('')
+    }}>
+      <div className="tweetBox__input">
+        <Avatar src="https://lh3.googleusercontent.com/ogw/ADGmqu8jZv4w4W3SfaWLWMISbKBGpxaxbw4Id0jI5tTO=s64-c-mo" />
+        <input onChange={(e) => { setMessage(e.target.value) }} value={message} placeholder='Whats happening, bro?' type="text" />
+      </div>
+      <div
+          className="tweetBox__imageInput"
+      >
+        <ImageIcon className="twetBox__imageIcon"/>
+      </div>
+      <Button
+          type="submit"
+          className="tweetBox__tweetButton"
+          disabled={!message}
+        >
+          Tweet
+        </Button>
+    </form>);
 }
 
 

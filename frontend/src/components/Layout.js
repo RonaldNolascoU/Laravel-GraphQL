@@ -28,9 +28,9 @@ const client = new ApolloClient({
 const Layout = (props) => {
     return (
         <ApolloProvider client={client}>
-            <Container textAlign='left'>
+            {/* <Container textAlign='left'> */}
                 {props.children}
-            </Container>
+            {/* </Container> */}
         </ApolloProvider>);
 }
 
