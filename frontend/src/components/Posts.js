@@ -1,18 +1,24 @@
-import { Comment, Segment, Input, Form, Button, Icon } from 'semantic-ui-react'
-import React, { useState, useEffect } from 'react';
-import LoginForm from './LoginForm';
-import { useQuery, gql, useMutation, useLazyQuery } from '@apollo/client';
+import { Comment, Segment, Input, Form  } from 'semantic-ui-react'
+import React, { useState, useContext } from 'react';
+import {gql, useMutation } from '@apollo/client';
 import CommentList from './CommentList';
 import moment from 'moment';
+import AuthContext from '../auth-context/AuthContext';
+
 const GET_POSTS = gql`
   query GetPosts {
-    me {
-    email
-     posts {
+     posts(orderBy: [
+         {
+             field: "created_at"
+             order: DESC
+         }
+     ]) {
       id
       content
+      image
       created_at
       author {
+          avatar
           name
       }
       comments {
@@ -27,7 +33,6 @@ const GET_POSTS = gql`
       }
     }
   }
-  }
 `;
 
 const ADD_COMMENT = gql`
@@ -37,6 +42,7 @@ mutation AddComment($post_id: Int, $reply: String!) {
       id
       title
       content
+      image
       comments {
         reply
       }
@@ -50,30 +56,18 @@ const parseDate = (date) => {
     return moment(date).fromNow();
 }
 
-const getLoggedState = (state) => {
-    return state
-}
+const Posts = ({ post }) => {
 
-const Posts = (props) => {
-    let input;
-    console.log(props)
     const [replyText, setReply] = useState(false);
     const [selectedPost, setPost] = useState(0);
-    const {loading, error, data, refetch } = useQuery(GET_POSTS);
     const [addComment, { loadingMutation }] = useMutation(ADD_COMMENT);
     const [message, setMessage] = useState('');
-
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error :(</p>;
-    if (!data.me) return <h3>Please login to create posts
-        <LoginForm onLogin={getLoggedState ? refetch : ''}></LoginForm>
-    </h3>
-    if (data &&  data.me.posts.length == 0) return <p>You do not have posts yet :(</p>;
-    return data.me.posts.map((post) => (
-        <Segment raised key={post.id}>
+    const {user} = useContext(AuthContext);
+    return (
+        <Segment raised >
             <Comment.Group>
                 <Comment>
-                    <Comment.Avatar src='https://lh3.googleusercontent.com/ogw/ADGmqu8jZv4w4W3SfaWLWMISbKBGpxaxbw4Id0jI5tTO=s64-c-mo' />
+                    <Comment.Avatar src={post.author.avatar} />
                     <Comment.Content>
                         <Comment.Author as='a'>{post.author.name}</Comment.Author>
                         <Comment.Metadata>
@@ -81,9 +75,16 @@ const Posts = (props) => {
                         </Comment.Metadata>
                         <Comment.Text>
                             <p>{post.content}</p>
+                            {post.image &&
+                            <img src={post.image} style={{width: "500px", height: "200px", objectFit: "contain"}}></img>
+                            }
                         </Comment.Text>
                         <Comment.Actions>
+                            {user && user.email ?
                             <Comment.Action style={{ userSelect: 'none' }} onClick={() => { setReply(!replyText); setPost(post.id) }}>Reply</Comment.Action>
+                            : null
+                            }
+
                             {(replyText && selectedPost == post.id) ?
                                 <Form
                                     onSubmit={e => {
@@ -121,7 +122,7 @@ const Posts = (props) => {
                 </Comment>
             </Comment.Group>
         </Segment>
-    ));
+    )
 }
 
 

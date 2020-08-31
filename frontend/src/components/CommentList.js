@@ -9,7 +9,7 @@ const parseDate = (date) => {
 const CommentList = (props) => {
     return props.comments.map((comment) => (
         <Comment key={comment.id}>
-            <Comment.Avatar src='https://lh3.googleusercontent.com/ogw/ADGmqu8jZv4w4W3SfaWLWMISbKBGpxaxbw4Id0jI5tTO=s64-c-mo' />
+            <Comment.Avatar src={comment.post.author.avatar} />
             <Comment.Content>
                 <Comment.Author as='a'>{comment.post.author.name}</Comment.Author>
                 <Comment.Metadata>

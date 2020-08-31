@@ -21,7 +21,8 @@ class PostMutator
         $post = new \App\Post([
             'author_id' => Auth::user()->id,
             'title' => 'test',
-            'content' => $args['content']
+            'content' => $args['content'],
+            'image' => $args['image'] ? $args['image'] : null
         ]);
         $context->user()->posts()->save($post);
 
