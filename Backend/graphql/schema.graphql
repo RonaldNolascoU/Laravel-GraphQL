@@ -16,9 +16,11 @@ type User {
     id: ID!
     name: String!
     email: String!
+    avatar: String!
     created_at: DateTime!
     updated_at: DateTime!
     posts(orderBy: [OrderByClause!] @orderBy): [Post!]! @hasMany
+    token: String!
 }
 
 input OrderByClause{
@@ -40,10 +42,17 @@ type Post {
     comments: [Comment!]! @hasMany
 }
 
+type LogoutResponse {
+    status: String!
+    message: String
+}
+
 type Mutation {
     addComment(post_id: Int, reply: String!): Comment! @create
     addPost(content: String!): Post! @field(resolver: "PostMutator@create")
-    login(email: String! password:String!):String @field(resolver: "AuthMutator@resolve")
+    login(email: String!, password: String!): User!
+    "Log out from the current session, showing the user one last time."
+    logout: User! @guard 
 }
 
 

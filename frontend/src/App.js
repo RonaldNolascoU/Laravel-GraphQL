@@ -11,7 +11,7 @@ import {AuthContextProvider} from './auth-context/AuthContext'
 
 const routes = [
   {
-    path: "/home",
+    path: ["/home", '/'],
     exact: true,
     main: () =>
       <React.Fragment>
@@ -51,8 +51,8 @@ function App() {
       >
       <React.Fragment>
         <Router>
-          <Sidebar />
           <Layout>
+          <Sidebar />
             <Switch>
               {routes.map((route, index) => (
                 <Route

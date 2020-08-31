@@ -1,7 +1,6 @@
-import { Comment, Segment, Input, Form, Button, Icon } from 'semantic-ui-react'
+import { Comment, Segment, Input, Form  } from 'semantic-ui-react'
 import React, { useState, useContext } from 'react';
-import LoginForm from './LoginForm';
-import { useQuery, gql, useMutation, useLazyQuery } from '@apollo/client';
+import {gql, useMutation } from '@apollo/client';
 import CommentList from './CommentList';
 import moment from 'moment';
 import AuthContext from '../auth-context/AuthContext';
@@ -20,6 +19,7 @@ const GET_POSTS = gql`
       content
       created_at
       author {
+          avatar
           name
       }
       comments {
@@ -57,19 +57,18 @@ const parseDate = (date) => {
     return moment(date).fromNow();
 }
 
-const Posts = ({ post, logged }) => {
+const Posts = ({ post }) => {
 
     const [replyText, setReply] = useState(false);
     const [selectedPost, setPost] = useState(0);
     const [addComment, { loadingMutation }] = useMutation(ADD_COMMENT);
     const [message, setMessage] = useState('');
     const {user} = useContext(AuthContext);
-    console.log(user);
     return (
         <Segment raised >
             <Comment.Group>
                 <Comment>
-                    <Comment.Avatar src='https://lh3.googleusercontent.com/ogw/ADGmqu8jZv4w4W3SfaWLWMISbKBGpxaxbw4Id0jI5tTO=s64-c-mo' />
+                    <Comment.Avatar src={post.author.avatar} />
                     <Comment.Content>
                         <Comment.Author as='a'>{post.author.name}</Comment.Author>
                         <Comment.Metadata>

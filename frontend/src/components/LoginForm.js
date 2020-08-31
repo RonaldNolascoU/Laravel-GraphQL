@@ -1,10 +1,15 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Form, Button } from 'semantic-ui-react';
 import { useQuery, gql, useMutation } from '@apollo/client';
+import  AuthContext  from '../auth-context/AuthContext';
 
 const SIGN_IN = gql`
 mutation SignIn($email: String!, $password: String!) {
-  login(email: $email, password: $password)
+  login(email: $email, password: $password) {
+      id
+      email
+      token
+  }
 }
 `;
 
@@ -14,11 +19,7 @@ const LoginForm = (props) => {
     const [password, setPassword] = useState('')
     const [signIn, { loadingMutation }] = useMutation(SIGN_IN);
     const [errorOnLogin, setErrorOnLogin] = useState(false);
-
-
-    useEffect(() => {
-        // Login()
-    }, []);
+    const {authenticated, setAuthenticated} = useContext(AuthContext)
 
     const Login = async () => {
         await signIn(
@@ -26,10 +27,11 @@ const LoginForm = (props) => {
                 variables: { email: email, password: password },
             }).then((response => {
                 if (response.data.login) {
-                    localStorage.setItem('token', response.data.login)
+                    localStorage.setItem('token', response.data.login.token)
                     setLogin(true);
                     console.log(isLogged, 'before prop')
-                    props.onLogin(true)
+                    // props.onLogin(true)
+                    setAuthenticated(true);
                 } else {
                     setErrorOnLogin(true);
                 }

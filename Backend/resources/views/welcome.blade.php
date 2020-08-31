@@ -82,7 +82,13 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                   @auth
+                       <h1>Emoji</h1>
+                   @endauth
+
+                   @guest
+                       <h1>Emoji Fake</h1>
+                   @endguest
                 </div>
 
                 <div class="links">
