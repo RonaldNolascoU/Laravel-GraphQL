@@ -44,3 +44,8 @@
     color:#50b7f5;
     cursor: pointer;
 }
+
+.tweet__image img {
+    width: 200px;
+    height: 200px;
+}

@@ -7,8 +7,6 @@ import AuthContext from '../auth-context/AuthContext';
 
 const GET_POSTS = gql`
   query GetPosts {
-    me {
-    email
      posts(orderBy: [
          {
              field: "created_at"
@@ -17,6 +15,7 @@ const GET_POSTS = gql`
      ]) {
       id
       content
+      image
       created_at
       author {
           avatar
@@ -34,7 +33,6 @@ const GET_POSTS = gql`
       }
     }
   }
-  }
 `;
 
 const ADD_COMMENT = gql`
@@ -44,6 +42,7 @@ mutation AddComment($post_id: Int, $reply: String!) {
       id
       title
       content
+      image
       comments {
         reply
       }
@@ -76,6 +75,9 @@ const Posts = ({ post }) => {
                         </Comment.Metadata>
                         <Comment.Text>
                             <p>{post.content}</p>
+                            {post.image &&
+                            <img src={post.image} style={{width: "500px", height: "200px", objectFit: "contain"}}></img>
+                            }
                         </Comment.Text>
                         <Comment.Actions>
                             {user && user.email ?

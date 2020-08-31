@@ -20,6 +20,7 @@ const GET_POSTS = gql`
      ]) {
       id
       content
+      image
       created_at
       author {
           avatar
