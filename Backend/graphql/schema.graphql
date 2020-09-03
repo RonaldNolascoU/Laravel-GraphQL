@@ -50,7 +50,7 @@ type LogoutResponse {
 
 type Mutation {
     addComment(post_id: Int, reply: String!): Comment! @create
-    addPost(content: String, image: String): Post! @field(resolver: "PostMutator@create")
+    addPost(content: String, image: [Upload]): Post! @field(resolver: "PostMutator@create")
     login(email: String!, password: String!): User!
     "Log out from the current session, showing the user one last time."
     logout: User! @guard 
@@ -63,6 +63,9 @@ type Comment {
     created_at: DateTime!
     post: Post! @belongsTo
 }
+
+scalar Upload
+@scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload")
 
 
 directive @whereConditions(

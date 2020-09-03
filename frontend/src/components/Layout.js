@@ -1,10 +1,9 @@
 import React from 'react';
-import { Container } from 'semantic-ui-react'
 import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import {createUploadLink} from 'apollo-upload-client';
 
-
-const httpLink = createHttpLink({
+const httpLink = createUploadLink({
     uri: 'http://localhost:8000/graphql',
   });
 

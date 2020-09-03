@@ -1,9 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { Form, TextArea, Icon } from 'semantic-ui-react'
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { Avatar, Button, FlatButton } from "@material-ui/core";
 import ImageIcon from '@material-ui/icons/Image';
 import AuthContext from '../auth-context/AuthContext';
+import gql from 'graphql-tag';
+
 
 const GET_POSTS = gql`
   query GetPosts {
@@ -33,7 +35,7 @@ const GET_POSTS = gql`
 `;
 
 const ADD_POST = gql`
-mutation createPost($content: String, $image: String) {
+mutation createPost($content: String, $image: [Upload]) {
   addPost(content: $content, image: $image) {
     id
     author {
@@ -51,21 +53,44 @@ mutation createPost($content: String, $image: String) {
 const NewPost = () => {
   const [addPost, { dataMutated }] = useMutation(ADD_POST);
   const [tweetImg, setTweetImg] = useState('');
+  const [tweetImgToServer, setTweetImgToServer] = useState([]);
   const [message, setMessage] = useState('');
   const { user } = useContext(AuthContext);
 
-  function handleImage(event) {
-    setTweetImg(URL.createObjectURL(event.target.files[0]))
+  function handleImage(
+    {
+      target: {
+        validity,
+        files: [tweetImgToServer],
+      },
+    }
+  ) {
+    console.log(validity, tweetImgToServer)
+    if (validity.valid) {
+      setTweetImg(URL.createObjectURL(tweetImgToServer))
+      setTweetImgToServer(tweetImgToServer);
+    }
   }
   return (
-    <form onSubmit={e => {
+    <form encType={'multipart/form-data'} onSubmit={e => {
+      console.log( tweetImgToServer)
       e.preventDefault();
-      addPost({
-        variables: { content: message, image: tweetImg },
-        refetchQueries: [{ query: GET_POSTS }]
-      })
+      {tweetImgToServer ? 
+        addPost({
+          
+          variables: { content: message, image: tweetImgToServer && tweetImgToServer },
+          refetchQueries: [{ query: GET_POSTS }]
+        })
+        :
+        addPost({
+          
+          variables: { content: message },
+          refetchQueries: [{ query: GET_POSTS }]
+        })
+      }
       setMessage('')
       setTweetImg('')
+      setTweetImgToServer([])
     }}>
       <div className="tweetBox__input">
         <Avatar src={user.avatar} />
@@ -78,8 +103,9 @@ const NewPost = () => {
         <input
           id="iconFile"
           type="file"
+          name='document'
           style={{ display: "none" }}
-          onChange={(e) => {handleImage(e)}}
+          onChange={handleImage}
         />
         <div className="tweet__image">
           {tweetImg.length > 0 && <img src={tweetImg}/>}
