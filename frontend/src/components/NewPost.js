@@ -69,7 +69,7 @@ const NewPost = () => {
     }}>
       <div className="tweetBox__input">
         <Avatar src={user.avatar} />
-        <input onChange={(e) => { setMessage(e.target.value) }} value={message} placeholder='Whats happening?' type="text" />
+        <input onChange={(e) => { setMessage(e.target.value) }} value={message} placeholder="What's happening?" type="text" />
       </div>
       <div
         className="tweetBox__imageInput"

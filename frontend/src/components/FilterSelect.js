@@ -23,7 +23,7 @@ const FilterSelect = (props) => {
                     <div className="filter__option" onClick={() => {props.onSelectedOption('all')}}>
                         <SyncAltIcon />
                         <div className="filter__option--body">
-                            <span>See Latest Tweets Instead</span>
+                            <span>See All Tweets Instead</span>
                         </div>
                     </div>
 

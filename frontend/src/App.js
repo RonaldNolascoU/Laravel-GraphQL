@@ -8,6 +8,7 @@ import Sidebar from './components/Sidebar';
 import Widgets from './components/Widgets';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import {AuthContextProvider} from './auth-context/AuthContext'
+import Explore from './components/Explore';
 
 const routes = [
   {
@@ -21,7 +22,11 @@ const routes = [
   },
   {
     path: "/explore",
-    main: () => <h2>Explore</h2>
+    main: () =>       
+    <React.Fragment>
+      <Explore />
+      <Widgets />
+  </React.Fragment>
   },
   {
     path: "/notifications",
