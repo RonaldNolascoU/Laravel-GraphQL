@@ -2,6 +2,7 @@
 
 namespace App\GraphQL\Mutations;
 
+use App\Post;
 use Illuminate\Support\Facades\Auth;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
@@ -18,13 +19,15 @@ class PostMutator
 
     public function create($rootValue, array $args, GraphQLContext $context)
     {
-        $post = new \App\Post([
-            'author_id' => Auth::user()->id,
+        $post = new Post([
+            'author_id' => auth()->user()->id,
             'title' => 'test',
             'content' => $args['content'],
-            'image' => $args['image'] ? $args['image'] : null
+            'image' => Storage::disk('s3')->put($filename, base64_decode($args['image']));
+            // 'image' => $args['image'] ? $args['image'] : null
         ]);
-        $context->user()->posts()->save($post);
+        $post->save();
+        // $context->user()->posts()->save($post);
 
         return $post;
     }
