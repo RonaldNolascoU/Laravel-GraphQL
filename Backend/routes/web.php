@@ -19,3 +19,7 @@ Route::get('/', function () {
 Route::get('/test', 'TestController@create');
 Route::post('/test', 'TestController@store');
 Route::get('/test/{post}', 'TestController@show');
+
+Route::get('/upload', 'UploadController@create');
+Route::post('/upload', 'UploadController@store');
+Route::get('/upload/{post}', 'UploadController@show');
