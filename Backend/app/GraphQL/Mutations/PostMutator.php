@@ -4,6 +4,7 @@ namespace App\GraphQL\Mutations;
 
 use App\Post;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 class PostMutator
@@ -19,12 +20,14 @@ class PostMutator
 
     public function create($rootValue, array $args, GraphQLContext $context)
     {
-        $post = new Post([
-            'author_id' => auth()->user()->id,
+        $imageContent = $args['image'] ? $args['image'] : null;
+        $path = $args['image'] ? $args['image'][0]->store('image', 's3'): null;
+
+        $post = new \App\Post([
+            'author_id' => Auth::user()->id,
             'title' => 'test',
             'content' => $args['content'],
-            'image' => Storage::disk('s3')->put($filename, base64_decode($args['image']));
-            // 'image' => $args['image'] ? $args['image'] : null
+            'image' => $args['image'] ? 'https://testing1995.s3.us-east-2.amazonaws.com/image/' . basename($path) : null
         ]);
         $post->save();
         // $context->user()->posts()->save($post);
