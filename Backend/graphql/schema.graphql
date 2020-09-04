@@ -5,7 +5,7 @@ scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
 
 type Query {
-    users: [User!]! @paginate(defaultCount: 10)
+    users(name: String! @where(operator: "like")): [User!]! @all
     user(id: ID @eq): User @find
     posts(orderBy: [OrderByClause!] @orderBy author: [Int] @in(key: "author_id")): [Post]! @all
     post(id: Int! @eq): Post @find
@@ -51,7 +51,7 @@ type LogoutResponse {
 type Mutation {
     addComment(post_id: Int, reply: String!): Comment! @create
     addPost(content: String, image: [Upload]): Post! @field(resolver: "PostMutator@create")
-    login(email: String!, password: String!): User!
+    login(email: String!  @rules(apply: ["email"]), password: String!): User!
     "Log out from the current session, showing the user one last time."
     logout: User! @guard 
 }

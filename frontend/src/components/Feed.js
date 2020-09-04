@@ -73,6 +73,7 @@ const Feed = () => {
         if (data && data.posts) {
             setPosts(data.posts)
         }
+
     })
 
     console.log(authenticated, user, 'Feed user')

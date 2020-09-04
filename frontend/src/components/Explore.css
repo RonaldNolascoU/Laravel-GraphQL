@@ -52,9 +52,17 @@
     color: gray;
 }
 
-.explore__input .users__dropdown {
-
+.users__dropdown {
+  padding: 0 30px;
 }
+
+.menu-item .user__name{
+  font-weight: bold;
+  color: #14171A;
+  font-size: 15px;
+  padding-left: 10px;
+}
+
 
 .explore__input input:focus > .users__dropdown {
     background: red;
@@ -70,6 +78,7 @@ ul{
   a{
     color: var(--text-color);
     text-decoration: none;
+    cursor: pointer;
   }
   
   .navbar{
@@ -101,10 +110,10 @@ ul{
   }
   
   .icon-button{
-    --button-size:calc(var(--nav-size) * 0.5);
+    --button-size:calc(var(--nav-size) * 0.8);
     width: var(--button-size);
     height: var(--button-size);
-    background-color: var(--bg-accent);
+    /* background-color: var(--bg-accent); */
     border-radius: 50%;
     padding: 5px;
     margin: 2px;
@@ -115,19 +124,28 @@ ul{
     user-select: none;
     transition: filter 300ms;
   }
-  
+  span.icon-button {
+    font-size: 21px;
+    --button-size:calc(var(--nav-size) * 0.8);
+    width: var(--button-size);
+    height: var(--button-size);
+  }
+
   .icon-button:hover{
     filter: brightness(1.2);
   }
-  
+ 
+  /* TODO: CHANGE HEIGHT TO CUSTOM HEIGHT */
   .dropdown{
     /* position: absolute; */
     /* top: 58px; */
-    height: 200px;
+    height: auto;
     overflow-y: scroll;
     width: 100%;
     transform: translateX(0);
-    background-color: var(--bg);
+    /* background-color: var(--bg); */
+    background-color: rgba(255,255,255,1.00);
+    box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
     border: var(--border);
     border-radius: var(--border-radius);
     padding: 1rem;
@@ -144,7 +162,7 @@ ul{
   }
   
   .menu-item:hover{
-    background-color: #525357;
+    background-color: #50b7f5;
   }
   
   .icon-right{
@@ -190,4 +208,8 @@ ul{
   .menu-secondary-exit-active{
     transform: translateX(110%);
     transition: all var(--speed) ease;
+  }
+
+  body ::-webkit-scrollbar {
+    width: 0px !important;
   }
