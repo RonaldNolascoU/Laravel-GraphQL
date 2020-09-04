@@ -10,14 +10,6 @@
 </head>
 
 <body>
-    <!-- <form action="/test" method="POST" enctype="multipart/form-data">
-@csrf
-        <input type="text" name="title">
-        <input type="text" name="content">
-        <input type="file" name="image">
-        <button type="submit">upload</button> 
-</form>-->
-
     <div class="container"></div>
     <form action="/test" method="POST" enctype="multipart/form-data" class="border border-light p-5">
     @csrf
@@ -65,5 +57,4 @@
     </form>
     </div>
 </body>
-
 </html>
